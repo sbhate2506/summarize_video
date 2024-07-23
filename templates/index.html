@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Summarize YouTube Video</title>
+	</head>
+	<body>
+		<header>
+			<form id="url-form" style="margin: 0 auto">
+				<h1>Summarize Video</h1>
+				<input type="text" name="url" placeholder="Enter YouTube vode url" />
+				<button id="summarize" type="submit">Summarize</button>
+			</form>
+		</header>
+		<div id="spinner" style="display:none">
+			
+		</div>
+		<main id="result" style="display:none">
+			<div>
+				<h2>Summary</h2>
+				<p id="summary"></p>
+			</div>
+			<div>
+				<h2>Sentiments</h2>
+				<p id="sentiments"></p>
+			</div>
+		</main>
+		<script>
+			const form = document.getElementById("url-form");
+			const spinner = document.getElementById("spinner");
+			const form = document.getElementById("result");
+			
+			form.addEventListener("submit", (e) => {
+				e.preventDefault();
+				
+				result.style.display = "none";
+				spinner.style.display = "";
+				
+				const formData = new FormData(form);
+				
+				fetch("/summarize", {method: "POST", body: formData})
+					.then(res => {
+						if(res.ok) return res.json();
+						throw new Error("failed");
+					})
+					.then(data => {
+						document.getElementById("summary").textContent = data.summary.summary;
+						document.getElementById("sentiments").textContent = data.summary.sentiments;
+				
+						result.style.display = "";
+						spinner.style.display = "none";
+					})
+			});
+		</script>
+	</body>
+</html>
