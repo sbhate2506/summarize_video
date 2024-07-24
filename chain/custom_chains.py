@@ -1,7 +1,11 @@
+import os
+from dotenv import load_dotenv
 from langchain_core.runnables import RunnableSequence
 from langchain_openai import ChatOpenAI
 from langchain.prompt import PromptTemplate
 from output_parsers import summary_parser
+
+load_dotenv()
 
 def get_summary_chain() -> RunnableSequence:
     summary_template = """
