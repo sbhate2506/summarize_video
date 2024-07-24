@@ -1,7 +1,11 @@
+import os
+from dotenv import load_dotenv
 from pytube import YouTube, extract
 from pytube.exceptions import VideoUnavailable, RegexMatchError
 from youtube_transcript_api import YouTubeTranscriptApi
 from googleapiclient.discovery import build
+
+load_dotenv()
 
 def validate_youtube_url(url):
     try:
@@ -33,7 +37,7 @@ def get_comments(video_id):
     api_version = "v3"
     DEVELOPER_KEY = os.getenv("YOUTUBE_API_KEY")
     
-    yt = build(api_service_name, api_version, developerKy = DEVELOPER_KEY)
+    yt = build(api_service_name, api_version, developerKey = DEVELOPER_KEY)
     
     video_response = yt.commentThreads().list(
         part = 'snippet,replies',
@@ -48,7 +52,7 @@ def get_comments(video_id):
         if 'nextPageToken' in video_response:
             video_response = yt.commentThreads().list(
                 part = 'snippet,replies',
-                videoId = video_id
+                videoId = video_id,
                 pageToken = video_response['nextPageToken']            
             ).execute()
         else:
@@ -58,5 +62,8 @@ def get_comments(video_id):
     
 
 
-if __name__ == "__main__"
+if __name__ == "__main__":
     pass
+    #video_id = validate_youtube_url("https://www.youtube.com/watch?v=kBNPVcRYTyw")
+    #print(f'transcript : {get_transcript(video_id)}')
+    #print(f'comments : {get_comments(video_id)}')
