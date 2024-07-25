@@ -16,7 +16,7 @@ def validate_youtube_url(url):
         print('invalid url')
     else:
         video_id=extract.video_id(url)
-        return video_id
+        return video_id, yt.title
 
 def get_transcript(video_id):
     transcript = YouTubeTranscriptApi.get_transcript(video_id)
