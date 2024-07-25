@@ -17,9 +17,13 @@
 					</div>
 				</div>
 			</form>
-		</div>
-		<div id="spinner" class="spinner-border text-primary" style="display:none"></div>
+			<div id="spinner" class="spinner-border text-primary" style="display:none"></div>
+		</div>		
 		<div id="result" class="container p-5 my-5 border" style="display:none">
+			<div class="container">
+				<p class="h2">Title</p>
+				<p id="title"></p>
+			</div>
 			<div class="container">
 				<p class="h2">Summary</p>
 				<p id="summary"></p>
@@ -30,17 +34,17 @@
 			</div>
 		</div>
 		<script>
-			const form = document.getElementById("url-form");
+			const form1 = document.getElementById("url-form");
 			const spinner = document.getElementById("spinner");
-			const form = document.getElementById("result");
+			const result = document.getElementById("result");
 			
-			form.addEventListener("submit", (e) => {
+			form1.addEventListener("submit", (e) => {
 				e.preventDefault();
 				
 				result.style.display = "none";
 				spinner.style.display = "";
 				
-				const formData = new FormData(form);
+				const formData = new FormData(form1);
 				
 				fetch("/summarize", {method: "POST", body: formData})
 					.then(res => {
@@ -48,6 +52,7 @@
 						throw new Error("failed");
 					})
 					.then(data => {
+						document.getElementById("title").textContent = data.title;
 						document.getElementById("summary").textContent = data.summary.summary;
 						document.getElementById("sentiments").textContent = data.summary.sentiments;
 				

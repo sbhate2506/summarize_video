@@ -13,9 +13,10 @@ def index():
 @app.route("/summarize", methods=["POST"])
 def summarize():
     url = request.form["url"]
-    summary = summarize_video(url=url)
+    title, summary = summarize_video(url=url)
     return jsonify(
         {
-            "summary" : summary.todict()        
+            "title" : title,
+            "summary" : summary.to_dict()        
         }
     )
