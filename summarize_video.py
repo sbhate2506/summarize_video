@@ -3,11 +3,11 @@ from youtube.youtube import (
     get_transcript, 
     get_comments
 )
-from chains.custom_chains import get_summary_chain
+from chain.custom_chains import get_summary_chain
 from output_parser import Summary
 
 def summarize_video(url:str):
-    video_id = validate_youtube_url(url)
+    video_id, title = validate_youtube_url(url)
     transcript = get_transcript(video_id)
     comments = get_comments(video_id)
     
@@ -16,8 +16,9 @@ def summarize_video(url:str):
         input={"transcript": transcript, "comments": comments}
     )
     
-    return summary_and_sentiments    
+    #print(summary_and_sentiments)
+    return title, summary_and_sentiments
 
-if __name__="__main__"
+if __name__=="__main__":
     pass
     #summarize_video("https://www.youtube.com/watch?v=kBNPVcRYTyw")
