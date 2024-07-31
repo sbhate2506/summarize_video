@@ -17,8 +17,13 @@
 					</div>
 				</div>
 			</form>
+			<br/>
 			<div id="spinner" class="spinner-border text-primary" style="display:none"></div>
-		</div>		
+			<br/>			
+			<div id="error" class="alert alert-warning" style="display:none">
+				<span id="error-message"></span>
+			</div>
+		</div>
 		<div id="result" class="container p-5 my-5 border" style="display:none">
 			<div class="container">
 				<p class="h2">Title</p>
@@ -37,27 +42,41 @@
 			const form1 = document.getElementById("url-form");
 			const spinner = document.getElementById("spinner");
 			const result = document.getElementById("result");
+			const error = document.getElementById("error");
 			
 			form1.addEventListener("submit", (e) => {
 				e.preventDefault();
 				
 				result.style.display = "none";
 				spinner.style.display = "";
+				error.style.display = "none";
 				
 				const formData = new FormData(form1);
 				
 				fetch("/summarize", {method: "POST", body: formData})
 					.then(res => {
 						if(res.ok) return res.json();
-						throw new Error("failed");
+						console.log(res);
 					})
 					.then(data => {
-						document.getElementById("title").textContent = data.title;
-						document.getElementById("summary").textContent = data.summary.summary;
-						document.getElementById("sentiments").textContent = data.summary.sentiments;
-				
-						result.style.display = "";
-						spinner.style.display = "none";
+						if(data.title)
+						{
+							document.getElementById("title").textContent = data.title;
+							document.getElementById("summary").textContent = data.summary.summary;
+							document.getElementById("sentiments").textContent = data.summary.sentiments;
+							
+							error.style.display = "none";
+							result.style.display = "";
+							spinner.style.display = "none";
+						}
+						else if(data.status_code)
+						{							
+							document.getElementById("error-message").textContent = data.status_code + ' ' + data.message;
+							
+							error.style.display = "";
+							result.style.display = "none";
+							spinner.style.display = "none";
+						}
 					})
 			});
 		</script>
