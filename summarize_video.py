@@ -16,9 +16,7 @@ def summarize_video(url:str):
         input={"transcript": transcript, "comments": comments}
     )
     
-    #print(summary_and_sentiments)
     return title, summary_and_sentiments
 
 if __name__=="__main__":
     pass
-    #summarize_video("https://www.youtube.com/watch?v=kBNPVcRYTyw")

@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from langchain_core.runnables import RunnableSequence
-#from langchain_openai import ChatOpenAI
 from langchain_google_genai import GoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from output_parser import summary_parser
@@ -19,7 +18,6 @@ def get_summary_chain() -> RunnableSequence:
     """
     
     api_key = os.getenv("GOOGLE_AI_KEY")
-    #llm = ChatOpenAI(temperature=0, model_name="gpt-3.5.turbo")
     llm = GoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=api_key)
     
     summary_prompt_template = PromptTemplate(
