@@ -4,6 +4,7 @@ from pytube import YouTube, extract
 from pytube.exceptions import VideoUnavailable, RegexMatchError
 from youtube_transcript_api import YouTubeTranscriptApi
 from googleapiclient.discovery import build
+from custom_exception import InvalidUsage
 
 load_dotenv()
 
@@ -11,9 +12,9 @@ def validate_youtube_url(url):
     try:
         yt = YouTube(url)
     except VideoUnavailable:
-        print('video unavailable')
+        raise InvalidUsage('video not found', 404)
     except RegexMatchError:
-        print('invalid url')
+        raise InvalidUsage('invalid url', 400)
     else:
         video_id=extract.video_id(url)
         return video_id, yt.title
@@ -64,6 +65,3 @@ def get_comments(video_id):
 
 if __name__ == "__main__":
     pass
-    #video_id = validate_youtube_url("https://www.youtube.com/watch?v=kBNPVcRYTyw")
-    #print(f'transcript : {get_transcript(video_id)}')
-    #print(f'comments : {get_comments(video_id)}')
